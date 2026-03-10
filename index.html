@@ -2,223 +2,1026 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced Webpage - Practical 1</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PhoneKart - Mobile Store</title>
     <style>
+        :root {
+            --bg: #0b0c10;
+            --card: #11131a;
+            --muted: #b8c0cc;
+            --text: #ffffff;
+            --brand: #5b8cff;
+            --brand2: #21d4fd;
+            --ok: #2bd576;
+            --danger: #ff4d4d;
+            --shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
+            --radius: 14px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            line-height: 1.6;
-            background: #f4f4f4;
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, Helvetica, sans-serif;
+            line-height: 1.5;
+            background: radial-gradient(1000px 600px at 15% 10%, rgba(91, 140, 255, .25), transparent 60%),
+                radial-gradient(900px 500px at 90% 0%, rgba(33, 212, 253, .18), transparent 55%),
+                var(--bg);
+            color: var(--text);
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
         }
 
         /* Navbar */
         .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 50;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px;
-            background: #111;
-            color: #fff;
+            gap: 12px;
+            padding: 14px 16px;
+            background: rgba(11, 12, 16, 0.72);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
 
-        .navbar a {
-            color: #fff;
-            margin: 0 15px;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        /* Hero Section */
-        .hero {
-            background: url('https://picsum.photos/1500/800') center/cover no-repeat;
-
-            color: white;
-            height: 65vh;
+        .brand {
             display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
-            text-align: center;
+            gap: 10px;
+            font-weight: 800;
+            letter-spacing: 0.2px;
+        }
+
+        .brand-badge {
+            width: 34px;
+            height: 34px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--brand), var(--brand2));
+            display: grid;
+            place-items: center;
+            box-shadow: 0 12px 24px rgba(91, 140, 255, 0.25);
+            font-weight: 900;
+        }
+
+        .navlinks {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .navlinks a {
+            padding: 8px 10px;
+            border-radius: 10px;
+            font-weight: 650;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .navlinks a:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .search {
+            display: none;
+        }
+
+        /* Layout */
+        .container {
+            width: min(1100px, 92vw);
+            margin: 0 auto;
+        }
+
+        .hero {
+            padding: 34px 0 12px;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 18px;
+            align-items: stretch;
+        }
+
+        .hero-card {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            border-radius: var(--radius);
+            padding: 22px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-card:before {
+            content: "";
+            position: absolute;
+            inset: -140px -140px auto auto;
+            width: 280px;
+            height: 280px;
+            background: radial-gradient(circle at 30% 30%, rgba(33, 212, 253, 0.45), transparent 60%);
+            transform: rotate(20deg);
         }
 
         .hero h1 {
-            font-size: 50px;
             margin: 0;
-            animation: fadeIn 2s ease-in-out;
+            font-size: clamp(26px, 4vw, 44px);
+            line-height: 1.1;
         }
 
         .hero p {
-            font-size: 20px;
-            margin-top: 10px;
+            margin: 10px 0 0;
+            color: var(--muted);
+            max-width: 55ch;
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .hero-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 16px;
         }
 
-        /* Section Design */
-        section {
-            padding: 60px;
-            background: #fff;
-            margin: 30px auto;
-            width: 90%;
-            border-radius: 8px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-        }
-
-        h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        /* Features */
-        .features {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-
-            gap: 20px;
-        }
-
-        .feature-box {
-            background: #fafafa;
-            padding: 20px;
-            text-align: center;
-            border-radius: 10px;
-            transition: .3s;
-        }
-
-        .feature-box:hover {
-            transform: scale(1.05);
-            background: #e3e3e3;
-        }
-
-        /* Contact Form */
-        .contact-form {
-            width: 60%;
-            margin: auto;
-        }
-
-        .contact-form input,
-        .contact-form textarea {
-            width: 100%;
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            font-size: 16px;
-        }
-
-        .contact-form button {
-            padding: 15px 30px;
-            border: none;
-            background: #111;
-            color: white;
-            border-radius: 8px;
+        .btn {
+            border: 0;
             cursor: pointer;
-            transition: .3s;
+            padding: 12px 14px;
+            border-radius: 12px;
+            font-weight: 750;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: transform .1s ease, background .2s ease, border-color .2s ease;
+            user-select: none;
+        }
+
+        .btn:active {
+            transform: translateY(1px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--brand), var(--brand2));
+            color: #061019;
+        }
+
+        .btn-ghost {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            color: rgba(255, 255, 255, 0.95);
+        }
+
+        .pill {
+            display: inline-flex;
+            gap: 8px;
+            align-items: center;
+            padding: 8px 10px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            color: rgba(255, 255, 255, 0.92);
+            font-weight: 650;
+            font-size: 13px;
+            width: fit-content;
+        }
+
+        .hero-side {
+            display: grid;
+            gap: 14px;
+        }
+
+        .stat {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            border-radius: var(--radius);
+            padding: 16px;
+        }
+
+        .stat h3 {
+            margin: 0;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 750;
+        }
+
+        .stat p {
+            margin: 8px 0 0;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        /* Sections */
+        section {
+            padding: 22px 0;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 12px;
+            margin: 6px 0 12px;
+        }
+
+        .section-title h2 {
+            margin: 0;
             font-size: 18px;
         }
 
-        .contact-form button:hover {
+        .section-title .hint {
+            color: var(--muted);
+            font-size: 13px;
+        }
 
-            background: #444;
+        /* Products grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+        }
+
+        .card button {
+            all: unset;
+            display: block;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .thumb {
+            aspect-ratio: 4 / 3;
+            background: #0f1117;
+            display: grid;
+            place-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: .95;
+            transition: transform .25s ease;
+        }
+
+        .card:hover .thumb img {
+            transform: scale(1.03);
+        }
+
+        .card-body {
+            padding: 12px 12px 14px;
+        }
+
+        .name {
+            margin: 0;
+            font-weight: 800;
+            letter-spacing: 0.2px;
+        }
+
+        .sub {
+            margin: 6px 0 0;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .price-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 10px;
+            gap: 10px;
+        }
+
+        .price {
+            font-weight: 900;
+            font-size: 15px;
+        }
+
+        .tag {
+            font-size: 12px;
+            font-weight: 750;
+            padding: 6px 8px;
+            border-radius: 999px;
+            background: rgba(43, 213, 118, 0.15);
+            border: 1px solid rgba(43, 213, 118, 0.35);
+            color: rgba(222, 255, 236, 0.95);
+        }
+
+        /* About */
+        .about {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius);
+            padding: 16px;
+        }
+
+        .about p {
+            margin: 0;
+            color: var(--muted);
+        }
+
+        /* Contact */
+        .contact {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .contact-card {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            border-radius: var(--radius);
+            padding: 16px;
+        }
+
+        label {
+            display: block;
+            font-weight: 700;
+            font-size: 13px;
+            margin: 10px 0 6px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: rgba(0, 0, 0, 0.25);
+            color: var(--text);
+            font-size: 14px;
+            outline: none;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        .note {
+            margin: 10px 0 0;
+            color: var(--muted);
+            font-size: 12px;
         }
 
         /* Footer */
         footer {
-            text-align: center;
-            padding: 20px;
-            background: #111;
-            color: white;
-            margin-top: 20px;
+            margin-top: 14px;
+            padding: 20px 0 30px;
+            color: rgba(255, 255, 255, 0.7);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
         }
 
-        /* Mobile Responsive */
-        @media (max-width: 768px) {
-            .features {
+        /* Modal (product details) */
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.65);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 18px;
+            z-index: 100;
+        }
+
+        .modal.open {
+            display: flex;
+        }
+
+        .modal-dialog {
+            width: min(760px, 100%);
+            background: linear-gradient(180deg, rgba(17, 19, 26, 0.95), rgba(17, 19, 26, 0.85));
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            max-height: 86vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .modal-media {
+            background: #0f1117;
+            min-height: 260px;
+        }
+
+        .modal-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .modal-content {
+            padding: 16px;
+            overflow: auto;
+        }
+
+        .modal-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .modal-top h3 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .close {
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: rgba(255, 255, 255, 0.06);
+            color: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 10px 12px;
+            cursor: pointer;
+            font-weight: 800;
+        }
+
+        .specs {
+            margin: 12px 0 0;
+            padding: 0;
+            list-style: none;
+            display: grid;
+            gap: 8px;
+        }
+
+        .specs li {
+            padding: 10px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.88);
+        }
+
+        .specs strong {
+            color: rgba(255, 255, 255, 0.98);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 14px;
+        }
+
+        /* Mobile */
+        @media (max-width: 920px) {
+            .grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 740px) {
+            .hero-grid {
                 grid-template-columns: 1fr;
             }
 
-            .contact-form {
-                width: 90%;
+            .navlinks {
+                gap: 6px;
             }
 
-            .hero h1 {
-                font-size: 32px;
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .contact {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-dialog {
+                grid-template-columns: 1fr;
+                max-height: 92vh;
+            }
+
+            .modal-media {
+                min-height: 210px;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .navlinks a {
+                padding: 8px 8px;
+                font-size: 13px;
             }
         }
     </style>
 </head>
 
 <body>
-    <!-- Navbar -->
-    <div class="navbar">
-        <h2>My Website</h2>
-        <div>
-            <a href="#">Home</a>
+    <header class="navbar">
+        <a class="brand" href="#home" aria-label="PhoneKart Home">
+            <span class="brand-badge">PK</span>
+            <span>PhoneKart</span>
+        </a>
+
+        <nav class="navlinks" aria-label="Main navigation">
+            <a href="#home">Home</a>
+            <a href="#products">Products</a>
             <a href="#about">About</a>
-            <a href="#features">Features</a>
             <a href="#contact">Contact</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <!-- HOME / HERO -->
+        <section id="home" class="hero">
+            <div class="hero-grid">
+                <div class="hero-card">
+                    <div class="pill">Free Delivery • 7-Day Replacement • COD Available</div>
+                    <h1>Buy your next phone with confidence.</h1>
+                    <p>
+                        A small demo e-commerce website for mobile phones. Tap any product to see full description and
+                        specifications.
+                    </p>
+                    <div class="hero-actions">
+                        <a class="btn btn-primary" href="#products">Browse Phones</a>
+                        <a class="btn btn-ghost" href="#contact">Ask a Question</a>
+                    </div>
+                    <p class="note">Note: This is a front-end demo (no real payments or orders).</p>
+                </div>
+
+                <div class="hero-side">
+                    <div class="stat">
+                        <h3>Top picks</h3>
+                        <p>Hand-picked phones with great display, camera and battery balance.</p>
+                    </div>
+                    <div class="stat">
+                        <h3>Easy product details</h3>
+                        <p>Click a product card to open a working details popup (modal).</p>
+                    </div>
+                    <div class="stat">
+                        <h3>Working navigation</h3>
+                        <p>Navbar links jump to sections smoothly on mobile and desktop.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PRODUCTS -->
+        <section id="products">
+            <div class="section-title">
+                <h2>Featured Phones</h2>
+                <div class="hint">Tap a phone to view description</div>
+            </div>
+
+            <div class="grid" id="productGrid">
+                <!-- Each product card is a button for accessibility -->
+                <article class="card">
+                    <button type="button" class="product" data-id="p1" aria-label="Open details for Nova X1">
+                        <div class="thumb">
+                            <img src="https://picsum.photos/seed/phone1/800/600" alt="Nova X1 smartphone" />
+                        </div>
+                        <div class="card-body">
+                            <p class="name">Nova X1</p>
+                            <p class="sub">6.5" AMOLED • 50MP • 5000mAh</p>
+                            <div class="price-row">
+                                <span class="price">₹24,999</span>
+                                <span class="tag">Best Value</span>
+                            </div>
+                        </div>
+                    </button>
+                </article>
+
+                <article class="card">
+                    <button type="button" class="product" data-id="p2" aria-label="Open details for Zenith Pro 5G">
+                        <div class="thumb">
+                            <img src="https://picsum.photos/seed/phone2/800/600" alt="Zenith Pro 5G smartphone" />
+                        </div>
+                        <div class="card-body">
+                            <p class="name">Zenith Pro 5G</p>
+                            <p class="sub">6.7" 120Hz • 64MP OIS • 5G</p>
+                            <div class="price-row">
+                                <span class="price">₹32,499</span>
+                                <span class="tag">New</span>
+                            </div>
+                        </div>
+                    </button>
+                </article>
+
+                <article class="card">
+                    <button type="button" class="product" data-id="p3" aria-label="Open details for Orbit Mini">
+                        <div class="thumb">
+                            <img src="https://picsum.photos/seed/phone3/800/600" alt="Orbit Mini smartphone" />
+                        </div>
+                        <div class="card-body">
+                            <p class="name">Orbit Mini</p>
+                            <p class="sub">Compact • 6.1" OLED • 4300mAh</p>
+                            <div class="price-row">
+                                <span class="price">₹18,990</span>
+                                <span class="tag">Compact</span>
+                            </div>
+                        </div>
+                    </button>
+                </article>
+
+                <article class="card">
+                    <button type="button" class="product" data-id="p4" aria-label="Open details for Titan Ultra">
+                        <div class="thumb">
+                            <img src="https://picsum.photos/seed/phone4/800/600" alt="Titan Ultra smartphone" />
+                        </div>
+                        <div class="card-body">
+                            <p class="name">Titan Ultra</p>
+                            <p class="sub">200MP • 8K Video • 12GB RAM</p>
+                            <div class="price-row">
+                                <span class="price">₹54,999</span>
+                                <span class="tag">Flagship</span>
+                            </div>
+                        </div>
+                    </button>
+                </article>
+
+                <article class="card">
+                    <button type="button" class="product" data-id="p5" aria-label="Open details for Pulse A3">
+                        <div class="thumb">
+                            <img src="https://picsum.photos/seed/phone5/800/600" alt="Pulse A3 smartphone" />
+                        </div>
+                        <div class="card-body">
+                            <p class="name">Pulse A3</p>
+                            <p class="sub">6.6" LCD • 48MP • 6000mAh</p>
+                            <div class="price-row">
+                                <span class="price">₹14,499</span>
+                                <span class="tag">Big Battery</span>
+                            </div>
+                        </div>
+                    </button>
+                </article>
+
+                <article class="card">
+                    <button type="button" class="product" data-id="p6" aria-label="Open details for Aurora S">
+                        <div class="thumb">
+                            <img src="https://picsum.photos/seed/phone6/800/600" alt="Aurora S smartphone" />
+                        </div>
+                        <div class="card-body">
+                            <p class="name">Aurora S</p>
+                            <p class="sub">6.55" AMOLED • 32MP Selfie • 5G</p>
+                            <div class="price-row">
+                                <span class="price">₹27,990</span>
+                                <span class="tag">Creator</span>
+                            </div>
+                        </div>
+                    </button>
+                </article>
+
+                <article class="card">
+                    <button type="button" class="product" data-id="p7" aria-label="Open details for Ranger X Rugged">
+                        <div class="thumb">
+                            <img src="https://picsum.photos/seed/phone7/800/600" alt="Ranger X Rugged smartphone" />
+                        </div>
+                        <div class="card-body">
+                            <p class="name">Ranger X Rugged</p>
+                            <p class="sub">IP68 • 7000mAh • Gorilla Glass</p>
+                            <div class="price-row">
+                                <span class="price">₹22,750</span>
+                                <span class="tag">Rugged</span>
+                            </div>
+                        </div>
+                    </button>
+                </article>
+
+                <article class="card">
+                    <button type="button" class="product" data-id="p8" aria-label="Open details for Swift 5 Lite">
+                        <div class="thumb">
+                            <img src="https://picsum.photos/seed/phone8/800/600" alt="Swift 5 Lite smartphone" />
+                        </div>
+                        <div class="card-body">
+                            <p class="name">Swift 5 Lite</p>
+                            <p class="sub">90Hz • 50MP • 33W fast charge</p>
+                            <div class="price-row">
+                                <span class="price">₹16,999</span>
+                                <span class="tag">Budget</span>
+                            </div>
+                        </div>
+                    </button>
+                </article>
+            </div>
+        </section>
+
+        <!-- ABOUT -->
+        <section id="about">
+            <div class="section-title">
+                <h2>About PhoneKart</h2>
+                <div class="hint">Small demo store</div>
+            </div>
+            <div class="about">
+                <p>
+                    PhoneKart is a simple, single-page e-commerce demo built with HTML + CSS + a tiny bit of JavaScript.
+                    It shows a product grid and a working product details popup when a user clicks on a phone.
+                </p>
+            </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section id="contact">
+            <div class="section-title">
+                <h2>Contact</h2>
+                <div class="hint">We reply within 24 hours (demo)</div>
+            </div>
+            <div class="contact">
+                <div class="contact-card">
+                    <h3 style="margin:0 0 8px;">Send a message</h3>
+                    <form id="contactForm">
+                        <label for="fullName">Full Name</label>
+                        <input id="fullName" name="fullName" type="text" placeholder="Your name" required />
+
+                        <label for="email">Email</label>
+                        <input id="email" name="email" type="email" placeholder="you@example.com" required />
+
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="5" placeholder="Which phone do you need help with?"
+                            required></textarea>
+
+                        <button class="btn btn-primary" type="submit">Send</button>
+                        <p class="note" id="contactNote" aria-live="polite"></p>
+                    </form>
+                </div>
+
+                <div class="contact-card">
+                    <h3 style="margin:0 0 8px;">Store info</h3>
+                    <p class="note" style="margin:0; font-size:13px;">
+                        <strong>PhoneKart (Demo)</strong><br />
+                        Open: 10:00 AM – 8:00 PM<br />
+                        Phone: +91 90000 00000<br />
+                        Email: support@phonekart.demo
+                    </p>
+                    <p class="note">Tip: Click any product in the “Products” section to view details.</p>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div class="container" style="width:100%;">
+                © 2026 PhoneKart • Demo mobile e-commerce website (HTML/CSS/JS)
+            </div>
+        </footer>
+    </main>
+
+    <!-- Product Details Modal -->
+    <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal-dialog" role="document">
+            <div class="modal-media">
+                <img id="modalImage" src="" alt="" />
+            </div>
+            <div class="modal-content">
+                <div class="modal-top">
+                    <div>
+                        <h3 id="modalTitle">Product</h3>
+                        <div class="sub" id="modalSubtitle"></div>
+                        <div class="price" id="modalPrice" style="margin-top:10px;"></div>
+                    </div>
+                    <button class="close" id="closeModal" type="button" aria-label="Close product details">✕</button>
+                </div>
+
+                <p class="note" id="modalDesc" style="margin-top:12px;"></p>
+
+                <ul class="specs" id="modalSpecs"></ul>
+
+                <div class="modal-actions">
+                    <button class="btn btn-primary" type="button" id="addToCartBtn">Add to Cart</button>
+                    <a class="btn btn-ghost" href="#contact" id="askBtn">Ask about this phone</a>
+                </div>
+                <p class="note" id="cartNote" aria-live="polite"></p>
+            </div>
         </div>
     </div>
-    <!-- Hero Section -->
-    <div class="hero">
-        <h1>Welcome to My Advanced Website</h1>
-        <p>Designed Using Only HTML & CSS</p>
-    </div>
 
-    <!-- About Section -->
-    <section id="about">
-        <h2>About This Website</h2>
-        <p style="text-align:center;">
-            This is an advanced HTML webpage created for Practical 1.
-            It includes a navigation bar, hero section, responsive layout, grid system,
-            contact form, animations, and professional styling using pure HTML and CSS.
-        </p>
-    </section>
-    <!-- Features Section -->
-    <section id="features">
-        <h2>Key Features</h2>
-        <div class="features">
-            <div class="feature-box">
-                <h3>Responsive Design</h3>
-                <p>Automatically adjusts layout for mobile, tablet, and desktop.</p>
-            </div>
-            <div class="feature-box">
-                <h3>Modern UI</h3>
-                <p>Clean, professional design with hover effects & animations.</p>
-            </div>
-            <div class="feature-box">
-                <h3>Fast Performance</h3>
-                <p>Optimized HTML & CSS make the website load fast & smooth.</p>
-            </div>
-        </div>
-    </section>
-    <!-- Contact Section -->
-    <section id="contact">
-        <h2>Contact Me</h2>
-        <form class="contact-form">
-            <input type="text" placeholder="Full Name" required>
-            <input type="email" placeholder="Email Address" required>
-            <textarea rows="5" placeholder="Write your message..." required></textarea>
-            <button type="submit">Send Message</button>
-        </form>
-    </section>
-    <!-- Footer -->
-    <footer>
+    <script>
+        // Demo product data
+        const PRODUCTS = {
+            p1: {
+                name: "Nova X1",
+                subtitle: "6.5\" AMOLED • 50MP • 5000mAh",
+                price: "₹24,999",
+                image: "https://picsum.photos/seed/phone1/1000/800",
+                desc: "Nova X1 delivers a bright AMOLED display, dependable all‑day battery, and a sharp 50MP camera for everyday shots.",
+                specs: [
+                    ["Display", "6.5\" AMOLED, FHD+"],
+                    ["Processor", "Octa‑core 2.4GHz"],
+                    ["Memory", "8GB RAM / 128GB"],
+                    ["Camera", "50MP + 8MP + 2MP"],
+                    ["Battery", "5000mAh, 33W fast charge"],
+                ],
+            },
+            p2: {
+                name: "Zenith Pro 5G",
+                subtitle: "6.7\" 120Hz • 64MP OIS • 5G",
+                price: "₹32,499",
+                image: "https://picsum.photos/seed/phone2/1000/800",
+                desc: "Zenith Pro 5G is built for speed with a 120Hz display, stable OIS camera, and fast 5G connectivity.",
+                specs: [
+                    ["Display", "6.7\" 120Hz AMOLED"],
+                    ["Processor", "5G chipset (mid‑premium)"],
+                    ["Memory", "8GB RAM / 256GB"],
+                    ["Camera", "64MP (OIS) + 12MP + 5MP"],
+                    ["Battery", "4800mAh, 67W fast charge"],
+                ],
+            },
+            p3: {
+                name: "Orbit Mini",
+                subtitle: "Compact • 6.1\" OLED • 4300mAh",
+                price: "₹18,990",
+                image: "https://picsum.photos/seed/phone3/1000/800",
+                desc: "Orbit Mini is perfect for one‑hand use, without sacrificing display quality or battery life.",
+                specs: [
+                    ["Display", "6.1\" OLED"],
+                    ["Processor", "Octa‑core 2.2GHz"],
+                    ["Memory", "6GB RAM / 128GB"],
+                    ["Camera", "48MP + 8MP"],
+                    ["Battery", "4300mAh, 30W charge"],
+                ],
+            },
+            p4: {
+                name: "Titan Ultra",
+                subtitle: "200MP • 8K Video • 12GB RAM",
+                price: "₹54,999",
+                image: "https://picsum.photos/seed/phone4/1000/800",
+                desc: "Titan Ultra is a flagship powerhouse with a high‑resolution camera system and top performance for gaming and creators.",
+                specs: [
+                    ["Display", "6.8\" QHD+ 120Hz"],
+                    ["Processor", "Flagship 4nm chipset"],
+                    ["Memory", "12GB RAM / 512GB"],
+                    ["Camera", "200MP + 50MP + 12MP"],
+                    ["Battery", "5100mAh, 80W charge"],
+                ],
+            },
+            p5: {
+                name: "Pulse A3",
+                subtitle: "6.6\" LCD • 48MP • 6000mAh",
+                price: "₹14,499",
+                image: "https://picsum.photos/seed/phone5/1000/800",
+                desc: "Pulse A3 focuses on battery life and value. Great for students and daily use with a reliable 48MP camera.",
+                specs: [
+                    ["Display", "6.6\" LCD, FHD+"],
+                    ["Processor", "Efficient 8‑core"],
+                    ["Memory", "6GB RAM / 128GB"],
+                    ["Camera", "48MP + 2MP"],
+                    ["Battery", "6000mAh, 25W charge"],
+                ],
+            },
+            p6: {
+                name: "Aurora S",
+                subtitle: "6.55\" AMOLED • 32MP Selfie • 5G",
+                price: "₹27,990",
+                image: "https://picsum.photos/seed/phone6/1000/800",
+                desc: "Aurora S is made for social creators with a crisp AMOLED display and a high‑quality 32MP selfie camera.",
+                specs: [
+                    ["Display", "6.55\" AMOLED"],
+                    ["Processor", "5G chipset"],
+                    ["Memory", "8GB RAM / 128GB"],
+                    ["Camera", "50MP + 8MP • 32MP selfie"],
+                    ["Battery", "4700mAh, 44W charge"],
+                ],
+            },
+            p7: {
+                name: "Ranger X Rugged",
+                subtitle: "IP68 • 7000mAh • Gorilla Glass",
+                price: "₹22,750",
+                image: "https://picsum.photos/seed/phone7/1000/800",
+                desc: "Ranger X Rugged is built for tough use with a large 7000mAh battery and water/dust resistance.",
+                specs: [
+                    ["Durability", "IP68 water/dust resistance"],
+                    ["Display", "6.58\" FHD+"],
+                    ["Memory", "8GB RAM / 128GB"],
+                    ["Camera", "50MP main"],
+                    ["Battery", "7000mAh, 33W charge"],
+                ],
+            },
+            p8: {
+                name: "Swift 5 Lite",
+                subtitle: "90Hz • 50MP • 33W fast charge",
+                price: "₹16,999",
+                image: "https://picsum.photos/seed/phone8/1000/800",
+                desc: "Swift 5 Lite offers smooth scrolling with a 90Hz display plus fast charging, making it a strong budget pick.",
+                specs: [
+                    ["Display", "6.6\" 90Hz"],
+                    ["Processor", "Octa‑core"],
+                    ["Memory", "6GB RAM / 128GB"],
+                    ["Camera", "50MP + 2MP"],
+                    ["Battery", "5000mAh, 33W charge"],
+                ],
+            },
+        };
 
-        © 2025 My Advanced HTML Website | Designed for Full Stack Lab Practical
-    </footer>
+        const modal = document.getElementById("modal");
+        const modalImage = document.getElementById("modalImage");
+        const modalTitle = document.getElementById("modalTitle");
+        const modalSubtitle = document.getElementById("modalSubtitle");
+        const modalPrice = document.getElementById("modalPrice");
+        const modalDesc = document.getElementById("modalDesc");
+        const modalSpecs = document.getElementById("modalSpecs");
+        const closeModalBtn = document.getElementById("closeModal");
+        const addToCartBtn = document.getElementById("addToCartBtn");
+        const cartNote = document.getElementById("cartNote");
+        const askBtn = document.getElementById("askBtn");
+        const contactForm = document.getElementById("contactForm");
+        const contactNote = document.getElementById("contactNote");
+
+        let selectedProductId = null;
+        let cartCount = 0;
+
+        function openModal(productId) {
+            const p = PRODUCTS[productId];
+            if (!p) return;
+
+            selectedProductId = productId;
+            cartNote.textContent = "";
+
+            modalImage.src = p.image;
+            modalImage.alt = p.name;
+            modalTitle.textContent = p.name;
+            modalSubtitle.textContent = p.subtitle;
+            modalPrice.textContent = p.price;
+            modalDesc.textContent = p.desc;
+
+            modalSpecs.innerHTML = "";
+            p.specs.forEach(([k, v]) => {
+                const li = document.createElement("li");
+                li.innerHTML = `<strong>${k}:</strong> ${v}`;
+                modalSpecs.appendChild(li);
+            });
+
+            modal.classList.add("open");
+            document.body.style.overflow = "hidden";
+            closeModalBtn.focus();
+        }
+
+        function closeModal() {
+            modal.classList.remove("open");
+            document.body.style.overflow = "";
+            selectedProductId = null;
+        }
+
+        // Bind click handlers for product cards
+        document.querySelectorAll(".product").forEach((btn) => {
+            btn.addEventListener("click", () => openModal(btn.dataset.id));
+        });
+
+        // Close modal on overlay click
+        modal.addEventListener("click", (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        // Close modal button
+        closeModalBtn.addEventListener("click", closeModal);
+
+        // ESC key closes modal
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape" && modal.classList.contains("open")) closeModal();
+        });
+
+        // Demo Add to Cart
+        addToCartBtn.addEventListener("click", () => {
+            if (!selectedProductId) return;
+            cartCount += 1;
+            cartNote.textContent = `Added to cart (demo). Items in cart: ${cartCount}`;
+        });
+
+        // When asking about product, prefill message
+        askBtn.addEventListener("click", () => {
+            if (selectedProductId) {
+                const p = PRODUCTS[selectedProductId];
+                const msg = document.getElementById("message");
+                msg.value = `Hi! I want to know more about ${p.name} (${p.price}).`;
+            }
+            closeModal();
+        });
+
+        // Demo contact form submit
+        contactForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            contactNote.textContent = "Message sent (demo). We'll contact you soon.";
+            contactForm.reset();
+            setTimeout(() => (contactNote.textContent = ""), 3500);
+        });
+    </script>
 </body>
 
 </html>
